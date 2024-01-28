@@ -90,16 +90,16 @@ public class MyStack {
 	/**
 	 * @return String that represents the stack
 	 */
-	public String toString() {
-		String elements = "[";
-		
-		for(int i = 0; i < last; i++)
-			elements = elements + stack[i] + " ,";
-		
-		if(!isEmpty())
-			elements = elements + stack[last];
-		elements = elements + "]";
-		
-		return elements;
-	}
+	 public String toString() {
+	        if(isEmpty())
+	            return "[]";
+
+	        StringBuilder result = new StringBuilder("[");
+	        for (int i = 0; i < last; i++) {
+	            result.append(stack[i] + " ,");
+	        }
+	        
+	        result.append(stack[last] + "]");
+	        return result.toString();
+    }
 }

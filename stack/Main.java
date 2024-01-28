@@ -46,14 +46,15 @@ public class Main {
 		sorted2.push(1);
 		
 		System.out.println(stack.toString());
-		// stack.pop();
-		// System.out.println(stack.toString());
-		reverseElementsOrder(stack);
-		System.out.println(stack.toString());
-		// System.out.println(mergeSortedStacks(sorted1, sorted2));
-		// System.out.println(sortStack(stack));
-		// System.out.println(isElementExists(stack, 82));
-		// System.out.println(stack);
+		stack.pop();
+		System.out.println(stack);
+		reverseStack(stack);
+		System.out.println(stack);
+		System.out.println(mergeSortedStacks(sorted1, sorted2));
+		stack = sortStack(stack);
+		System.out.println(stack);
+		System.out.println(isElementExist(stack, 12));
+		System.out.println(stack);
 		System.out.println();
 		
 		MyStack stack1 = new MyStack();
@@ -99,12 +100,12 @@ public class Main {
 			System.out.println(stacks.getStacks()[i]);
 		System.out.println();
 		
-		moveMax(stacks);
+		moveMaxFrom0To1(stacks);
 		for(int i = 0; i < 3; i++)
 			System.out.println(stacks.getStacks()[i]);
 		System.out.println();
 		
-		sortToZero(stacks);
+		sortAllToZero(stacks);
 		for(int i = 0; i < 3; i++)
 			System.out.println(stacks.getStacks()[i]);
 		System.out.println();
@@ -114,7 +115,7 @@ public class Main {
 	 * Gets a stack and reverses the order of the stack, runs in O(n) time
 	 * @param stack The stack to reverse
 	 */
-	public static void reverseElementsOrder(MyStack stack) {
+	public static void reverseStack(MyStack stack) {
 		MyStack reversedStack = new MyStack();
 		MyStack original = new MyStack();
 		
@@ -157,7 +158,7 @@ public class Main {
 		while(!stack2.isEmpty())
 			mergedStack.push(stack2.pop());
 		
-		reverseElementsOrder(mergedStack); // reverses the stack to make it ascending order
+		reverseStack(mergedStack); // reverses the stack to make it ascending order
 		return mergedStack;
 	}
 	
@@ -172,17 +173,17 @@ public class Main {
 			return stack;
 		
 		// Creating 2 stacks, each for half of the numbers in the original stack, to make it easier to solve
-		MyStack lowerHalf = new MyStack();
-		MyStack upperHalf = new MyStack();
+		MyStack firstHalf = new MyStack();
+		MyStack secondHalf = new MyStack();
 		
 		// Divides the number from the original stack between the new stacks
 		while(!stack.isEmpty()) {
-			lowerHalf.push(stack.pop());
+			firstHalf.push(stack.pop());
 			if(!stack.isEmpty())
-				upperHalf.push(stack.pop());
+				secondHalf.push(stack.pop());
 		}
 		
-		return mergeSortedStacks(sortStack(lowerHalf), sortStack(upperHalf)); // The recursive call to sort the 2 stacks
+		return mergeSortedStacks(sortStack(firstHalf), sortStack(secondHalf)); // The recursive call to sort the 2 stacks
 	}
 	
 	/**
@@ -191,8 +192,8 @@ public class Main {
 	 * @param num The number to search for
 	 * @return True if the number exists in the stack, false otherwise
 	 */
-	public static boolean isElementExists(MyStack stack, int num) {
-		MyStack tempStack = new MyStack(); // To temporerly
+	public static boolean isElementExist(MyStack stack, int num) {
+		MyStack tempStack = new MyStack();
 		
 		// Removes to a temporary stack and compares the top number of the stack until the stack is empty or the number is found
 		while(!stack.isEmpty()) {
@@ -216,7 +217,7 @@ public class Main {
 	 * Moves the max number from the stack in index 0 to the top of the stack in index 1
 	 * @param stacks The HStack object to manipulate
 	 */
-	public static void moveMax(HStack stacks) {
+	public static void moveMaxFrom0To1(HStack stacks) {
 		int counter = 0; // To count the number of numbers in the stack in index 0
 		int max = stacks.peek(0);
 		
@@ -251,7 +252,7 @@ public class Main {
 	 * Combines and sorts the stacks from HStack objects to the stack in index 0 (empties the other stacks), runs in O(n^2) time
 	 * @param stacks The HStack object to manipulate
 	 */
-	public static void sortToZero(HStack stacks) {
+	public static void sortAllToZero(HStack stacks) {
 		// Moves all the numbers from the second stack to the first
 		while(!stacks.isEmpty(1)) {
 			stacks.move(1);
@@ -264,13 +265,12 @@ public class Main {
 		
 		// Moves all numbers from the first stack to the second, in ascending order
 		while(!stacks.isEmpty(0))
-			moveMax(stacks);
+			moveMaxFrom0To1(stacks);
 		
-		// Moves all the numbers from the second stack to the third, making them in descending order
+		// Moves all the numbers from the second stack to the first, making them in ascending order
 		while(!stacks.isEmpty(1))
 			stacks.move(1);
 		
-		// Moves all the numbers from the third stack to the first, making them in ascending order again
 		while(!stacks.isEmpty(2))
 			stacks.move(2);
 	}
